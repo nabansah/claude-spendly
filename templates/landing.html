@@ -16,7 +16,7 @@
         </p>
         <div class="hero-actions">
             <a href="{{ url_for('register') }}" class="btn-primary">Create free account</a>
-            <a href="#how-it-works" class="btn-ghost">See how it works <span class="sparkle">✦</span></a>
+            <a href="#" class="btn-ghost" id="how-it-works-btn" onclick="openVideoModal(); return false;">See how it works <span class="sparkle">✦</span></a>
         </div>
     </div>
 
@@ -95,5 +95,94 @@
         <a href="{{ url_for('register') }}" class="btn-primary">Create free account</a>
     </div>
 </section>
+
+<div id="video-modal" class="video-modal-overlay" onclick="closeVideoModal(event)">
+    <div class="video-modal-content">
+        <button class="video-modal-close" onclick="closeVideoModal(event, true)">&times;</button>
+        <div class="video-modal-wrapper">
+            <iframe id="video-modal-iframe"
+                    src=""
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen></iframe>
+        </div>
+    </div>
+</div>
+
+<style>
+.video-modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+}
+.video-modal-overlay.active {
+    display: flex;
+}
+.video-modal-content {
+    position: relative;
+    width: 90%;
+    max-width: 800px;
+}
+.video-modal-close {
+    position: absolute;
+    top: -40px;
+    right: 0;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 2rem;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0 4px;
+}
+.video-modal-close:hover {
+    color: #ccc;
+}
+.video-modal-wrapper {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    overflow: hidden;
+    border-radius: 8px;
+}
+.video-modal-wrapper iframe {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+}
+</style>
+
+<script>
+function openVideoModal() {
+    var modal = document.getElementById('video-modal');
+    var iframe = document.getElementById('video-modal-iframe');
+    iframe.src = 'https://www.youtube.com/embed/-Lt-ntUDj-g?list=PLKnIA16_RmvaYH3poI0oJvbDF4zEvpq8W&index=4&autoplay=1';
+    modal.classList.add('active');
+}
+
+function closeVideoModal(e, force) {
+    var modal = document.getElementById('video-modal');
+    if (force || e.target === modal) {
+        var iframe = document.getElementById('video-modal-iframe');
+        iframe.src = '';
+        modal.classList.remove('active');
+    }
+}
+
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        var modal = document.getElementById('video-modal');
+        if (modal.classList.contains('active')) {
+            document.getElementById('video-modal-iframe').src = '';
+            modal.classList.remove('active');
+        }
+    }
+});
+</script>
 
 {% endblock %}
